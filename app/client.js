@@ -14,6 +14,8 @@ async function main() {
  // Address of the deployed program.
  const programId = new anchor.web3.PublicKey(args['program']);
  const name = args['name'] || "Glass Chewer";
+ const strAge = args['age'] || "20";
+ const age = Number(strAge)
 
  // Generate the program client from IDL.
  const program = new anchor.Program(idl, programId);
@@ -25,7 +27,7 @@ async function main() {
  console.log('user public key: ' + provider.wallet.publicKey);
 
  // Execute the RPC.
- let tx = await program.rpc.execute(name,{
+ let tx = await program.rpc.execute(name, age, {
    accounts: {
      gmAccount: gmAccount.publicKey,
      user: provider.wallet.publicKey,
@@ -43,6 +45,7 @@ async function main() {
  // Fetch the account details of the account containing the price data
  const storedName = await program.account.greetingAccount.fetch(gmAccount.publicKey);
  console.log('Stored GM Name Is: ' + storedName.name)
+ console.log('Stored GM Age Is: ' + storedName.age)
 }
 
 console.log("Running client...");
